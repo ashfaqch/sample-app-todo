@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-6">
+        <div style="margin-top:30px;">
+
+            <h4 style="text-align:center">Todos</h4>
+            
+            <input type="text" class="form-control input-lg" name="title" [(ngModel)]="newTodo.title" #title="ngModel"
+                minlength="1" maxlength="25" required placeholder="What needs to be done?" (keyup.enter)="addTodo()">
+
+            <br>
+
+            <section *ngIf="todos.length > 0">
+                <ul class="list-group">
+                    <li class="list-group-item" style="padding: 4px 15px;" *ngFor="let todo of todos; let i = index">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id='I{{i}}' [(ngModel)]="todo.complete" #complete="ngModel"
+                                    [checked]="todo.complete == true" (change)="updateTodo(todo)"><span [ngStyle]="{'text-decoration': todo.complete === true ? 'line-through' : 'none' }">{{todo.title}}</span>
+                            </label>
+                            <button (click)="removeTodo(todo)" class="btn btn-default btn-xs pull-right"><i class="fa fa-times fa-fw"
+                                    aria-hidden="true"></i></button>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+    </div>
+</div>

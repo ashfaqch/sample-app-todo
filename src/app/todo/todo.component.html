@@ -1,29 +1,55 @@
 <div class="row">
     <div class="col-md-6">
         <div style="margin-top:30px;">
+            <div class="card-shadow">
+                
+                <h3 style="text-align:center">Todos</h3>
 
-            <h4 style="text-align:center">Todos</h4>
-            
-            <input type="text" class="form-control input-lg" name="title" [(ngModel)]="newTodo.title" #title="ngModel"
-                minlength="1" maxlength="25" required placeholder="What needs to be done?" (keyup.enter)="addTodo()">
+                <div *ngIf="errorMessage" class="alert alert-danger">
+                    Error: {{ errorMessage }}
+                </div>
 
-            <br>
+                <input type="text" class="form-control input-lg" name="title" [(ngModel)]="newTodo.title" #title="ngModel"
+                    minlength="1" maxlength="25" required placeholder="What needs to be done?" (keyup.enter)="addTodo()">
 
-            <section *ngIf="todos.length > 0">
-                <ul class="list-group">
-                    <li class="list-group-item" style="padding: 4px 15px;" *ngFor="let todo of todos; let i = index">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" id='I{{i}}' [(ngModel)]="todo.complete" #complete="ngModel"
-                                    [checked]="todo.complete == true" (change)="updateTodo(todo)"><span [ngStyle]="{'text-decoration': todo.complete === true ? 'line-through' : 'none' }">{{todo.title}}</span>
-                            </label>
-                            <button (click)="removeTodo(todo)" class="btn btn-default btn-xs pull-right"><i class="fa fa-times fa-fw"
-                                    aria-hidden="true"></i></button>
-                        </div>
-                    </li>
-                </ul>
-            </section>
+                <br>
 
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" (change)="showIdChanged($event.target.checked)" [checked]="showTodoId">
+                        <b>Show Id</b>
+                    </label>
+                </div>
+
+                <div class="card">
+                    <table class="table">
+                        <tbody>
+                            <tr *ngFor="let todo of todos; let i = index">
+                                <td *ngIf="showTodoId">{{todo.id}}</td>
+                                <td>
+                                    <div class="checkbox" style="margin:0">
+                                        <label>
+                                            <input type="checkbox" id='I{{i}}' [(ngModel)]="todo.complete" #complete="ngModel"
+                                                [checked]="todo.complete == true" (change)="updateTodo(todo, i)"><span
+                                                [ngStyle]="{'text-decoration': todo.complete === true ? 'line-through' : 'none' }">{{todo.title}}</span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td><button (click)="deleteTodo(todo, i)" class="btn btn-default btn-xs pull-right"><i
+                                            class="fa fa-times fa-fw" aria-hidden="true"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="container">
+                        <strong>{{ todos?.length }}</strong>
+                        {{todos?.length == 1 ? 'Todo' : 'Todos'}} in list
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

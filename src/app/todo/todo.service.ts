@@ -13,7 +13,6 @@ export class TodoService {
     getTodos(): Observable<Todo[]> {
         return this.http.get<Todo[]>(this.todosUrl)
             .pipe(
-                tap(data => console.log(JSON.stringify(data))),
                 catchError(this.handleError)
             );
     }
@@ -22,7 +21,6 @@ export class TodoService {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         return this.http.post<Todo>(this.todosUrl, todo, { headers: headers })
             .pipe(
-                tap(data => console.log('addTodo: ' + JSON.stringify(data))),
                 catchError(this.handleError)
             );
     }
@@ -32,7 +30,6 @@ export class TodoService {
         const url = `${this.todosUrl}/${todo.id}`;
         return this.http.put<Todo>(url, todo, { headers: headers })
             .pipe(
-                tap(() => console.log('updateTodo: ' + todo.id)),
                 map(() => todo),
                 catchError(this.handleError)
             );
@@ -43,14 +40,11 @@ export class TodoService {
         const url = `${this.todosUrl}/${id}`;
         return this.http.delete<Todo>(url, { headers: headers })
             .pipe(
-                tap(() => console.log('deleteTodo: ' + id)),
                 catchError(this.handleError)
             );
     }
 
     private handleError(err) {
-        // in a real world app, we may send the server to some remote logging infrastructure
-        // instead of just logging it to the console
         let errorMessage: string;
         if (err.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.

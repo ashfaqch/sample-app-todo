@@ -8,8 +8,10 @@ import { Todo } from './todo';
     styleUrls: ['./todo.component.css']
 })
 export class TodoComponent implements OnInit {
-    todos: Todo[] = [];
     newTodo = <Todo>{};
+    todos: Todo[] = [];
+    errorMessage: string;
+    showTodoId: boolean;
 
     constructor(private todoService: TodoService) {
         this.initialTodo();
@@ -27,7 +29,7 @@ export class TodoComponent implements OnInit {
         this.todoService.getTodos()
             .subscribe(
                 data => this.todos = data,
-                error => { console.log(error); },
+                error => this.errorMessage = error,
                 () => { }
             );
     }
@@ -41,37 +43,43 @@ export class TodoComponent implements OnInit {
             this.newTodo.id = 1;
         }
 
+        let response;
         this.todoService.addTodo(this.newTodo)
             .subscribe(
-                data => { },
-                error => { console.log(error); },
+                data => response = data,
+                error => this.errorMessage = error,
                 () => {
-                    this.loadTodoList();
+                    this.todos.push(response);
                     this.initialTodo();
                 }
             );
     }
 
-    public updateTodo(todo): void {
+    public updateTodo(todo, index): void {
+        let response;
         this.todoService.updateTodo(todo)
             .subscribe(
-                data => { },
-                error => { console.log(error); },
+                data => response = data,
+                error => this.errorMessage = error,
                 () => {
-                    this.loadTodoList();
+                    this.todos[index].complete = response.complete;
                 }
             );
     }
 
-    public removeTodo(todo): void {
+    public deleteTodo(todo, index): void {
         this.todoService.deleteTodo(todo.id)
             .subscribe(
                 data => { },
-                error => { console.log(error); },
+                error => this.errorMessage = error,
                 () => {
-                    this.loadTodoList();
+                    this.todos.splice(index, 1);
                 }
             );
+    }
+
+    showIdChanged(value: boolean): void {
+        this.showTodoId = value;
     }
 
 }

@@ -1,0 +1,13 @@
+.card {
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);
+}
+.card .container {
+    padding: 8px;
+}
+
+.card-shadow {
+    -moz-box-shadow: inset 0 0 25px silver;
+    -webkit-box-shadow: inset 0 0 25px silver;
+    box-shadow: inset 0 0 25px silver;
+    padding: 30px; 
+}
